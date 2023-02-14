@@ -120,6 +120,7 @@ def exec_sh(command, session):
 
         for k, v in list(zip(envs, creds)):
             os.environ[k] = str(v)
+        os.environ ['AWS_PROFILE'] = session.profile_name
 
         os.execvp(cmd[0], cmd)
     except OSError as e:
@@ -204,7 +205,7 @@ def parse_args():
 def main():
     args = parse_args()
     session = boto3.session.Session(profile_name=args.profile)
-
+    
     if args.session:
         exec_sh((f'aws ssm start-session --target {args.session}'), session)
 
